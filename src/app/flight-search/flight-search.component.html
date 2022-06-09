@@ -1,0 +1,233 @@
+<div class="booking-container">
+  <div class="row">
+    <div class="col-md-6">
+      <input
+        type="radio"
+        name="check"
+        [(ngModel)]="tripType"
+        [value]="type.round"
+        class="form-check-input"
+      />
+      <label class="form-check-label">Return</label>
+    </div>
+    <div class="col-md-6">
+      <input
+        type="radio"
+        name="check"
+        [(ngModel)]="tripType"
+        [value]="type.oneway"
+        class="form-check-input"
+      /><label class="form-check-label">One-way</label>
+    </div>
+  </div>
+  <form
+    class="row g-3"
+    #flightForm="ngForm"
+    (ngSubmit)="flightForm.form.valid && search()"
+  >
+    <span
+      class="text-danger"
+      *ngIf="
+        (origin.model || destination.model) &&
+        ((origin.touched && destination.touched) || flightForm.submitted) &&
+        flightDetails.origin == flightDetails.destination
+      "
+    >
+      Please select different origin and Destination airports
+    </span>
+    <span
+      class="text-danger"
+      *ngIf="
+        flightDetails.getDate(flightDetails.departure) >
+        flightDetails.getDate(flightDetails.returnDate)
+      "
+    >
+      Departure date should be before the return date
+    </span>
+    <div class="col-md-6">
+      <label class="form-label">Origin</label>
+      <select
+        #origin="ngModel"
+        name="origin"
+        class="form-select"
+        [(ngModel)]="flightDetails.origin"
+        required
+        placeholder="City or Airport"
+      >
+        <option *ngFor="let code of airports" [value]="code">
+          {{ code }}
+        </option>
+      </select>
+      <span
+        class="text-danger"
+        *ngIf="
+          (origin.touched || flightForm.submitted) &&
+          origin.errors &&
+          origin.errors['required']
+        "
+      >
+        Origin is required
+      </span>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Destination</label>
+      <select
+        #destination="ngModel"
+        name="destination"
+        class="form-select"
+        [(ngModel)]="flightDetails.destination"
+        required
+        placeholder="City or Airport"
+      >
+        <option *ngFor="let code of airports" [value]="code">
+          {{ code }}
+        </option>
+      </select>
+      <span
+        class="text-danger"
+        *ngIf="
+          (destination.touched || flightForm.submitted) &&
+          destination.errors &&
+          destination.errors['required']
+        "
+      >
+        Destination is required
+      </span>
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Departing</label>
+      <input
+        type="date"
+        required
+        #dep="ngModel"
+        name="departure"
+        [(ngModel)]="flightDetails.departure"
+        class="form-control"
+      />
+      <span
+        class="text-danger"
+        *ngIf="
+          (dep.touched || flightForm.submitted) &&
+          dep.errors &&
+          dep.errors['required']
+        "
+      >
+        Departure date is required
+      </span>
+    </div>
+
+    <div class="col-md-6" *ngIf="tripType == type.round">
+      <label class="form-label">Return</label>
+      <input
+        type="date"
+        name="return"
+        #ret="ngModel"
+        [(ngModel)]="flightDetails.returnDate"
+        required
+        class="form-control"
+      />
+      <span
+        class="text-danger"
+        *ngIf="
+          (ret.touched || flightForm.submitted) &&
+          ret.errors &&
+          ret.errors['required']
+        "
+      >
+        Return date is required
+      </span>
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Adult</label>
+      <div class="input-group">
+        <div
+          class="input-group-text"
+          (click)="flightDetails.adult = flightDetails.adult + 1"
+        >
+          +
+        </div>
+        <input
+          type="number"
+          name="adult"
+          [(ngModel)]="flightDetails.adult"
+          class="form-control"
+          readonly
+        />
+        <div
+          class="input-group-text"
+          (click)="
+            flightDetails.adult > 1 &&
+              (flightDetails.adult = flightDetails.adult - 1)
+          "
+        >
+          -
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Child</label>
+      <div class="input-group">
+        <div
+          class="input-group-text"
+          (click)="flightDetails.children = flightDetails.children + 1"
+        >
+          +
+        </div>
+        <input
+          type="number"
+          name="children"
+          [(ngModel)]="flightDetails.children"
+          class="form-control"
+          readonly
+        />
+        <div
+          class="input-group-text"
+          (click)="
+            flightDetails.children > 0 &&
+              (flightDetails.children = flightDetails.children - 1)
+          "
+        >
+          -
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Infant</label>
+      <div class="input-group">
+        <div
+          class="input-group-text"
+          (click)="flightDetails.infant = flightDetails.infant + 1"
+        >
+          +
+        </div>
+        <input
+          type="number"
+          name="infant"
+          [(ngModel)]="flightDetails.infant"
+          class="form-control"
+          readonly
+        />
+        <div
+          class="input-group-text"
+          (click)="
+            flightDetails.infant > 0 &&
+              (flightDetails.infant = flightDetails.infant - 1)
+          "
+        >
+          -
+        </div>
+      </div>
+    </div>
+    <!-- <label>Tavel Class</label>
+    <select class="form-control custom-select">
+      <option value="1">Business Class</option>
+      <option value="2">Economy Class</option>
+    </select> -->
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+  </form>
+</div>
