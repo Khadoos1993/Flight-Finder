@@ -1,10 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgModel } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { Type } from '../models/enum';
 import { Flight } from '../models/flight';
 import { FlightService } from '../services/flight.service';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-flight-search',
