@@ -18,8 +18,10 @@ export class FlightSearchComponent implements OnInit {
   constructor(private router: Router, private flight: FlightService) {}
 
   ngOnInit(): void {
-    this.flight.getAirports().subscribe((response: any) => {
-      this.airports = response.airports.map((x: any) => x.code);
+    this.flight.getAirports('en-us').subscribe((response: any) => {
+      this.airports = response.airports.map(
+        (x: any) => `${x.name} [${x.code}]`
+      );
     });
   }
 
